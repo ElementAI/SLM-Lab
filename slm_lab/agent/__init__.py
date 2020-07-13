@@ -131,6 +131,9 @@ class Body:
             self.action_pdtype = policy_util.ACTION_PDS[self.action_type][0]
         self.ActionPD = policy_util.get_action_pd_cls(self.action_pdtype, self.action_type)
 
+        if util.get_lab_mode() == 'dev':  # log tensorboard only on dev mode
+            self.init_tensorboard()
+
     def update(self, state, action, reward, next_state, done):
         '''Interface update method for body at agent.update()'''
         if util.get_lab_mode() == 'dev':  # log tensorboard only on dev mode
@@ -228,17 +231,20 @@ class Body:
         if util.get_lab_mode() == 'dev' and df_mode == 'train':  # log tensorboard only on dev mode and train df data
             self.log_tensorboard()
 
+    def init_tensorboard(self):
+        if not hasattr(self, 'tb_writer'):
+            log_prepath = self.spec['meta']['log_prepath']
+            self.tb_writer = SummaryWriter(os.path.dirname(log_prepath), filename_suffix=os.path.basename(log_prepath))
+            self.tb_actions = []  # store actions for tensorboard
+            logger.info(f'Using TensorBoard logging for dev mode. Run `tensorboard --logdir={log_prepath}` to start TensorBoard.')
+
     def log_tensorboard(self):
         '''
         Log summary and useful info to TensorBoard.
         NOTE this logging is comprehensive and memory-intensive, hence it is used in dev mode only
         '''
         # initialize TensorBoard writer
-        if not hasattr(self, 'tb_writer'):
-            log_prepath = self.spec['meta']['log_prepath']
-            self.tb_writer = SummaryWriter(os.path.dirname(log_prepath), filename_suffix=os.path.basename(log_prepath))
-            self.tb_actions = []  # store actions for tensorboard
-            logger.info(f'Using TensorBoard logging for dev mode. Run `tensorboard --logdir={log_prepath}` to start TensorBoard.')
+        self.init_tensorboard()
 
         trial_index = self.spec['meta']['trial']
         session_index = self.spec['meta']['session']
