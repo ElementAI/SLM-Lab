@@ -21,9 +21,9 @@ class Agent:
     Contains algorithm, memory, body
     '''
 
-    def __init__(self, spec, body, global_nets=None):
+    def __init__(self, spec, body, agent_idx=0, global_nets=None):
         self.spec = spec
-        self.agent_spec = spec['agent'][0]  # idx 0 for single-agent
+        self.agent_spec = spec['agent'][agent_idx]  # idx 0 for single-agent
         self.name = self.agent_spec['name']
         assert not ps.is_list(global_nets), f'single agent global_nets must be a dict, got {global_nets}'
         # set components
