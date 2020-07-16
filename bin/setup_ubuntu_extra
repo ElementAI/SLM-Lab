@@ -5,8 +5,10 @@
 set -e
 trap "exit" INT
 
+echo "--- Installing `glances for monitoring`"
+pip install nvidia-ml-py3 glances
+
 echo "--- Installing Unity ML agents ---"
-conda activate lab
 pip install gym_unity==0.4.5
 # clone to slm_lab/env/SLM-Env
 git clone https://github.com/kengz/SLM-Env.git ./slm_lab/env/SLM-Env

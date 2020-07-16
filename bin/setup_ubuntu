@@ -12,30 +12,22 @@ apt-get update && \
   python3-dev zlib1g-dev libjpeg-dev cmake swig python-pyglet python3-opengl libboost-all-dev libsdl2-dev libosmesa6-dev patchelf ffmpeg xvfb && \
   rm -rf /var/lib/apt/lists/*
 
-echo "--- Installing Conda ---"
-if which conda >/dev/null; then
-  echo "Conda is already installed"
+echo "--- Installing Python Dependencies ---"
+source "${HOME}"/.mvenv/mvenv.sh
+mve activate SLM-Lab
+if [ -z "${VIRTUAL_ENV}" ] >/dev/null; then
+  echo "Create a venv and try again"
+  exit 1
 else
-  curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-  bash Miniconda3-latest-Linux-x86_64.sh -b
-  rm Miniconda3-latest-Linux-x86_64.sh
-  echo '. ~/miniconda3/etc/profile.d/conda.sh' >> ~/.bashrc
-  source ~/.bashrc
+  pip install -U pip wheel
+  pip install -r requirements.txt
+  echo
+  echo "Python dependencies successfully installed."
+  echo
+  echo "Install Orca from https://github.com/plotly/orca/releases"
+  echo "For Ubuntu using the AppImage shows promising"
+  wget https://github.com/plotly/orca/releases/download/v1.3.1/orca-1.3.1.AppImage
+  echo "Rename to 'orca' and give it executable permissions."
+  sudo mv orca-1.3.1.AppImage ~/bin/orca
+  sudo chmod +x ~/bin/orca
 fi
-
-echo "--- Installing Conda environment ---"
-if conda env list | grep "^lab " >/dev/null; then
-  echo "conda env lab is already installed"
-else
-  conda create -n lab python=3.7.3 -y
-fi
-
-# remove for reset:
-# conda deactivate
-# conda env remove -n lab -y
-# conda env export > environment.yml
-echo "--- Updating Conda environment ---"
-conda env update -f environment.yml
-
-source ~/.bashrc
-echo "--- Lab setup complete ---"
