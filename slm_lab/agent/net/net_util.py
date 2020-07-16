@@ -208,7 +208,7 @@ def load_algorithm(algorithm):
     agent = algorithm.agent
     net_names = algorithm.net_names
     model_prepath = agent.spec['meta']['model_prepath']
-    if util.get_lab_mode() == 'enjoy':
+    if util.get_lab_mode() == 'enjoy' or util.get_lab_mode() == 'enjoy':
         model_prepath += '_ckpt-best'
     logger.info(f'Loading algorithm {util.get_class_name(algorithm)} nets {net_names} from {model_prepath}_*.pt')
     for net_name in net_names:

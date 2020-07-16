@@ -1,11 +1,15 @@
 # Generic env wrappers, including for Atari/images
 # They don't come with Gym but are crucial for Atari to work
 # Many were adapted from OpenAI Baselines (MIT) https://github.com/openai/baselines/blob/master/baselines/common/atari_wrappers.py
+import os
 from collections import deque
 from gym import spaces
 from slm_lab.lib import util
 import gym
 import numpy as np
+
+from gym import wrappers
+from time import time
 
 
 def try_scale_reward(cls, reward):
@@ -382,6 +386,8 @@ def wrap_deepmind(env, episode_life=True, stack_len=None, image_downsize=None):
 def make_gym_env(name, seed=None, frame_op=None, frame_op_len=None, image_downsize=None, reward_scale=None, normalize_state=False, episode_life=True):
     '''General method to create any Gym env; auto wraps Atari'''
     env = gym.make(name)
+    if os.environ.get('lab_mode') == 'record':
+        env = wrappers.Monitor(env, './gym_videos/' + str(time()) + '/')
     if seed is not None:
         env.seed(seed)
     if 'NoFrameskip' in env.spec.id:  # Atari

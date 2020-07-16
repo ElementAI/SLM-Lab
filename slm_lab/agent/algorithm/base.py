@@ -44,9 +44,9 @@ class Algorithm(ABC):
         for net_name in self.net_names:
             assert net_name.endswith('net'), f'Naming convention: net_name must end with "net"; got {net_name}'
 
-        # load algorithm if is in train@ resume or enjoy mode
+        # load algorithm if is in train@ resume or enjoyrecord mode
         lab_mode = util.get_lab_mode()
-        if self.agent.spec['meta']['resume'] or lab_mode == 'enjoy':
+        if self.agent.spec['meta']['resume'] or lab_mode == 'enjoy' or lab_mode == 'record':
             self.load()
             logger.info(f'Loaded algorithm models for lab_mode: {lab_mode}')
         else:

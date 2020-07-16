@@ -7,5 +7,5 @@ ROOT_DIR = os.getcwd()
 # ROOT_DIR = os.path.normpath(os.path.join(os.path.dirname(__file__), '..'))
 
 # valid lab_mode in SLM Lab
-EVAL_MODES = ('enjoy', 'eval')
+EVAL_MODES = ('enjoy', 'eval', 'record')
 TRAIN_MODES = ('search', 'train', 'dev')

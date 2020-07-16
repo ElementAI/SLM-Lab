@@ -33,11 +33,11 @@ def get_spec(spec_file, spec_name, lab_mode, pre_):
             _, _, _, _, experiment_ts = util.prepath_split(predir)  # get experiment_ts to resume train spec
             logger.info(f'Resolved to train@{predir}')
             spec = spec_util.get(spec_file, spec_name, experiment_ts)
-    elif lab_mode == 'enjoy':
+    elif lab_mode == 'enjoy' or lab_mode == 'record':
         # for enjoy@{session_spec_file}
         # e.g. enjoy@data/reinforce_cartpole_2020_04_13_232521/reinforce_cartpole_t0_s0_spec.json
         session_spec_file = pre_
-        assert session_spec_file is not None, 'enjoy mode must specify a `enjoy@{session_spec_file}`'
+        assert session_spec_file is not None, 'enjoy/record mode must specify a `enjoy/record@{session_spec_file}`'
         spec = util.read(f'{session_spec_file}')
     else:
         raise ValueError(f'Unrecognizable lab_mode not of {TRAIN_MODES} or {EVAL_MODES}')
