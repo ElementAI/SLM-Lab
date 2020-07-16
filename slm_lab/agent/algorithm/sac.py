@@ -74,7 +74,8 @@ class SoftActorCritic(ActorCritic):
         net_util.copy(self.q2_net, self.target_q2_net)
         # temperature variable to be learned, and its target entropy
         self.log_alpha = torch.zeros(1, requires_grad=True, device=self.net.device)
-        self.alpha = self.log_alpha.detach().exp()
+        # self.alpha = self.log_alpha.detach().exp()
+        self.alpha = torch.tensor(0.001)
         if self.body.is_discrete:
             self.target_entropy = - self.body.action_space.n
         else:
