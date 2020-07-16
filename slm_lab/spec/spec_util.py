@@ -215,6 +215,7 @@ def override_spec(spec, mode):
     overrider = {
         'dev': _override_dev_spec,
         'enjoy': _override_enjoy_spec,
+        'record': _override_enjoy_spec,
         'test': _override_test_spec,
     }.get(mode)
     if overrider is not None:
@@ -235,7 +236,7 @@ def tick(spec, unit):
     spec_util.tick(spec, 'session')
     session = Session(spec)
     '''
-    if util.get_lab_mode() == 'enjoy':  # don't tick in enjoy mode
+    if util.get_lab_mode() == 'enjoy' or util.get_lab_mode() == 'record':  # don't tick in enjoy mode
         return spec
 
     meta_spec = spec['meta']

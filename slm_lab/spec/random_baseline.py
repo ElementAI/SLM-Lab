@@ -1,5 +1,8 @@
 # Module to generate random baselines
 # Run as: python slm_lab/spec/random_baseline.py
+import os
+
+import slm_lab
 from slm_lab.lib import logger, util
 import gym
 import numpy as np
@@ -8,7 +11,13 @@ import roboschool
 import pybullet_envs
 
 
-FILEPATH = 'slm_lab/spec/_random_baseline.json'
+# EAI Patch: In slm_lab/__init__.py, we patched ROOT_DIR to allow saving
+#            to /data/ folder from the current working directory
+#            Here, we need to add an absolute path to load directly without ROOT_DIR
+ROOT_DIR = os.path.normpath(os.path.join(slm_lab.__path__[0], ".."))
+FILEPATH = os.path.join(ROOT_DIR, 'slm_lab/spec/_random_baseline.json')
+# FILEPATH = 'slm_lab/spec/_random_baseline.json'
+
 NUM_EVAL = 100
 # extra envs to include
 INCLUDE_ENVS = [

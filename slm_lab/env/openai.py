@@ -49,6 +49,11 @@ class OpenAIEnv(BaseEnv):
         self._set_attr_from_u_env(self.u_env)
         self.max_t = self.max_t or self.u_env.spec.max_episode_steps
         assert self.max_t is not None
+
+        # If single PyBullet env with lab_mode==dev, enable PyBullet's built-in GUI (before first env.reset())
+        if not self.is_venv and "BulletEnv" in self.name and util.get_lab_mode() == 'dev':
+            self.u_env.render()
+
         logger.info(util.self_desc(self))
 
     def seed(self, seed):
