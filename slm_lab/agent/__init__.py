@@ -136,7 +136,10 @@ class Body:
 
     def update(self, state, action, reward, next_state, done):
         '''Interface update method for body at agent.update()'''
-        if util.get_lab_mode() == 'dev':  # log tensorboard only on dev mode
+
+        # log tensorboard only on dev mode
+        # EAI added: or when log_to_tensorboard_always is set
+        if util.get_lab_mode() == 'dev' or os.environ.get("log_to_tensorboard_always", None) == "True":
             self.track_tensorboard(action)
 
     def __str__(self):
@@ -228,7 +231,12 @@ class Body:
         row_str = '  '.join([f'{k}: {v:g}' for k, v in last_row.items()])
         msg = f'{prefix} [{df_mode}_df] {row_str}'
         logger.info(msg)
-        if util.get_lab_mode() == 'dev' and df_mode == 'train':  # log tensorboard only on dev mode and train df data
+
+        # log tensorboard only on dev mode and train df data
+        # EAI added: or when log_to_tensorboard_always is set
+        if util.get_lab_mode() == 'dev' and df_mode == 'train' or \
+                os.environ.get("log_to_tensorboard_always", None) == "True":
+
             self.log_tensorboard()
 
     def init_tensorboard(self):
