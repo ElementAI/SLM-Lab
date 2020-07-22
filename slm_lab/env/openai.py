@@ -7,7 +7,7 @@ from slm_lab.lib.decorator import lab_api
 import gym
 import numpy as np
 import pydash as ps
-import roboschool
+# import roboschool
 import pybullet_envs
 
 
@@ -48,6 +48,9 @@ class OpenAIEnv(BaseEnv):
             self._set_clock()
         self._set_attr_from_u_env(self.u_env)
         self.max_t = self.max_t or self.u_env.spec.max_episode_steps
+        # Patch for dynamically-set episode length
+        if self.max_t is None and hasattr(self.u_env, "max_episode_steps"):
+            self.max_t = self.u_env.max_episode_steps
         assert self.max_t is not None
 
         # If single PyBullet env with lab_mode==dev, enable PyBullet's built-in GUI (before first env.reset())

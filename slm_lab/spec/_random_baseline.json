@@ -3192,7 +3192,7 @@
     "mean": -5.15,
     "std": 0.0
   },
-  "HalfCheetahVxBulletEnv-NoObs-v0": {
+  "HalfCheetahVxBulletEnv-v0": {
     "mean": 5.335386242268608,
     "std": 1.9933141108728247
   }
